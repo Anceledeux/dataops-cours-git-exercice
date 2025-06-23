@@ -1,87 +1,48 @@
-# docker-compose.yaml (Corrigé)
-
-# REMARQUE IMPORTANTE: Au moment de la création de ce fichier (simulation mai 2025),
-# apache/airflow:2.9.2 est utilisé comme exemple de version stable récente.
-# VEUILLEZ TOUJOURS VÉRIFIER la documentation officielle d'Apache Airflow
-# (https://airflow.apache.org/docs/apache-airflow/stable/start/docker.html)
-# pour la version stable la plus récente et les recommandations de configuration
-# au moment où vous préparez votre cours.
-x-airflow-image: &airflow-image apache/airflow:2.9.2
-
-# Définition des variables d'environnement et configurations communes pour les services Airflow
-x-airflow-base: &airflow-base # Renommé pour éviter confusion, ceci est la base de config
-  image: *airflow-image
+# docker-compose.yaml
+x-airflow-base: &airflow-base
+  # AU LIEU DE 'image:', on utilise 'build:' pour construire notre Dockerfile
+  build: .
   environment:
-    &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-    AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
-    AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
+    # On dit à Airflow de chercher les modules Python dans ces deux dossiers
+    PYTHONPATH: /opt/airflow/dags:/opt/airflow/scripts_pipeline
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW_UID: ${AIRFLOW_UID:-50000}
-    AIRFLOW_GID: ${AIRFLOW_GID:-0}
   volumes:
-    - ./dags:/opt/airflow/dags:rw
-    - ./logs:/opt/airflow/logs:rw
-    - ./plugins:/opt/airflow/plugins:rw
-    # AJOUTER CETTE LIGNE si elle n'y est pas :
-    - ./scripts_pipeline:/opt/airflow/scripts_pipeline
-  user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-0}"
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
+    # On monte le dossier data pour pouvoir y mettre le fichier d'input
+    # et récupérer les fichiers d'output
+    - ./data:/opt/airflow/data
 
 services:
   postgres:
     image: postgres:15
-    container_name: airflow-postgres-course
+    container_name: airflow-postgres-final
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
-      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - airflow-db-data:/var/lib/postgresql/data/pgdata
-    ports:
-      - "5432:5432"
+      - airflow-db-data-final:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: unless-stopped
 
   airflow-init:
-    <<: *airflow-base # Hérite de la configuration de base (image, env vars, volumes, user)
-    container_name: airflow-init-course
+    <<: *airflow-base
+    container_name: airflow-init-final
     entrypoint: /bin/bash
     command:
       - -c
-      - |
-        set -e;
-        if [ ! -f "/opt/airflow/airflow_initialized_course.flag" ]; then
-          echo "Initialisation de la base de données Airflow...";
-          airflow db upgrade;
-          echo "Création de l'utilisateur admin Airflow (airflow/airflow)...";
-          airflow users create \
-              --username airflow \
-              --firstname Airflow \
-              --lastname Admin \
-              --role Admin \
-              --email admin@example.org \
-              --password airflow || \
-          airflow users set-password --username airflow --password airflow;
-          touch /opt/airflow/airflow_initialized_course.flag;
-          echo "Initialisation terminée.";
-        else
-          echo "Airflow déjà initialisé (drapeau trouvé). Lancement des migrations si nécessaire.";
-          airflow db upgrade;
-        fi
-    depends_on: # airflow-init dépend UNIQUEMENT de postgres
-      postgres:
-        condition: service_healthy
+      - airflow db upgrade && airflow users create --username airflow --password airflow --firstname Airflow --lastname Admin --role Admin --email admin@example.org || true
 
   airflow-webserver:
     <<: *airflow-base
-    container_name: airflow-webserver-course
+    container_name: airflow-webserver-final
     command: webserver
     ports:
       - "8080:8080"
@@ -90,28 +51,17 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    restart: unless-stopped
-    depends_on: # webserver dépend de postgres ET de la fin de airflow-init
-      postgres:
-        condition: service_healthy
+    depends_on:
       airflow-init:
         condition: service_completed_successfully
 
   airflow-scheduler:
     <<: *airflow-base
-    container_name: airflow-scheduler-course
+    container_name: airflow-scheduler-final
     command: scheduler
-    healthcheck:
-      test: ["CMD-SHELL", "airflow jobs check --job-type SchedulerJob --hostname \"$$(hostname)\""]
-      interval: 30s
-      timeout: 30s
-      retries: 5
-    restart: unless-stopped
-    depends_on: # scheduler dépend de postgres ET de la fin de airflow-init
-      postgres:
-        condition: service_healthy
+    depends_on:
       airflow-init:
         condition: service_completed_successfully
 
 volumes:
-  airflow-db-data:
+  airflow-db-data-final:
