@@ -1,0 +1,53 @@
+id_transaction,date_transaction,id_produit,nom_produit,quantite,prix_unitaire_ht,ville_magasin
+TX001,2025-05-15,PROD_A,Pommes Gala,10,2.50,Paris
+TX002,2025-05-15,PROD_B,Poires Conférence,5,3.10,Lille
+TX003,2025-05-16,PROD_A,Pommes Gala,12,2.50,Paris
+TX004,2025-05-16,PROD_C,Oranges Navel,8,4.00,Lyon
+TX005,2025-05-17,PROD_B,Poires Conférence,N/A,3.10,Lille
+TX006,2025-05-17,PROD_D,Bananes Cavendish,25,1.80,Marseille
+TX007,2025-05-18,PROD_A,Pommes Gala,8,2.55,Paris
+TX008,2025-05-18,PROD_C,Oranges Navel,-5,4.00,Lyon
+TX009,2025-05-19,PROD_E,Kiwis Gold,15,5.20,Paris
+TX010,2025-05-19,PROD_A,Pommes Gala,10,2.50,Lille
+TX011,2025-05-20,PROD_F,,20,0.90,Lyon
+TX012,2025-05-20,PROD_B,Poires Conférence,7,3.10,Paris
+TX013,2025-05-21,PROD_C,Oranges Navel,9,4.05,Marseille
+TX014,2025-05-21,PROD_A,Pomme Gala,11,2.50,Lyon
+TX015,2025-05-22,PROD_D,Bananes Cavendish,30,NULL,Lille
+TX016,2025-05-22,PROD_E,Kiwis Gold,10,5.20,Paris
+TX017,2025-05-23,PROD_A,Pommes Gala,14,2.50,Marseille
+TX018,2025-05-23,PROD_B,Poires Conférence,6,3.10,Paris
+TX019,2025-05-24,PROD_G,Ananas Victoria,3,6.50,Lyon
+TX020,2025-05-24,PROD_A,Pommes Gala,9,2.50,Lille
+TX021,2025-05-15,PROD_A,Pommes Gala,10,2.50,Paris
+TX022,2025-05-25,PROD_H,Fraises Gariguette,15,6.20,Bordeaux
+TX023,2025-05-25,PROD_I,Citrons Jaunes,20,2.10,Toulouse
+TX024,2025-05-26,PROD_D,bananes cavendish,40,1.85,Paris
+TX025,2025-05-26,PROD_J,Mangues Kent,8,7.50,Nice
+TX026,2025-05-27,PROD_A,Pommes Gala,18,,Lyon
+TX027,2025-05-27,PROD_K,Avocats Hass,12,5.80,Marseille
+TX028,2025-05-28,PROD_B,Poires Conférence,6,3.15,Lille
+TX029,2025-05-28,PROD_I,Citrons Jaunes,-10,2.10,Bordeaux
+TX030,2025-05-29,PROD_G,Ananas Victoria,5,6.50,Toulouse
+TX031,2025-05-29,PROD_H,Fraises Gariguette,22,6.25,Paris
+TX032,2025-05-30,PROD_C,Oranges Navel,14,4.10,Nice
+TX033,2025-05-30,PROD_J,,7,7.50,Lyon
+TX034,2025-05-31,PROD_E,Kiwis Gold,20,5.20,Marseille
+TX035,2025-05-31,PROD_K,Avocats Hass,10,5.85,Bordeaux
+TX012,2025-06-01,PROD_B,Poires Conférence,9,3.10,Lille
+TX036,2025-06-01,PROD_A,Pommes Gala,,2.50,Paris
+TX037,2025-06-02,PROD_I,Citrons Jaunes,25,2.15,Toulouse
+TX038,2025-06-02,PROD_D,Bananes Cavendish,50,1.90,Nice
+TX039,2025-06-03,PROD_H,Fraises Gariguette,18,6.30,Lyon
+TX040,2025-06-03,,Kiwis Gold,15,5.25,Marseille
+TX041,2025-06-04,PROD_K,Avocats Hass,14,5.90,Bordeaux
+TX042,2025-06-04,PROD_C,Oranges Navel,12,0,Paris
+TX043,2025-06-05,PROD_B,Poires Conférence,11,3.20,Lille
+TX044,2025-06-05,PROD_J,Mangues Kent,6,7.60,Toulouse
+TX045,2025-06-06,PROD_A, Pommes Gala ,20,2.60,Nice
+TX046,2025-06-06,PROD_G,Ananas,4,6.55,Lyon
+TX047,2025-06-07,PROD_H,Fraises Gariguette,25,6.35,Marseille
+TX048,2025-06-07,PROD_I,Citrons Jaunes,30,2.20,Bordeaux
+TX049,2025-06-08,PROD_D,Bananes,60,1.95,Paris
+TX050,2025-06-08,PROD_K,Avocats Hass,16,6.00,Lille
+,2025-06-09,PROD_C,Oranges Navel,10,4.15,Toulouse
